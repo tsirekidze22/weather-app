@@ -5,11 +5,12 @@ import Image from "next/image";
 import axios from "axios";
 
 import "../styles/main.scss";
+import WeatherInfo from "./components/WeatherInfo";
 
 export default function Home() {
   const [city, setCity] = useState("");
   const [country, setCountry] = useState("");
-  const [weatherData, setWeatherData] = useState("");
+  const [weatherData, setWeatherData] = useState({});
   const inputRef = useRef<HTMLInputElement>(null);
 
   const fetchData = async (cityName: string) => {
@@ -24,12 +25,13 @@ export default function Home() {
       setCountry(response.data[0].country);
 
       if (lat && lon) {
-        const response2 = await axios.get(
+        const weatherResponse = await axios.get(
           `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${process.env.API_KEY}`
         );
-        const data2 = response2;
+        const weatherInfo = weatherResponse;
+        //console.log(data2);
         //you should use data2 and response2
-        //setWeatherData(response.data);
+        setWeatherData(weatherInfo.data);
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -113,7 +115,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="info-section"></div>
+        {weatherData && <WeatherInfo weatherData={weatherData} />}
       </div>
     </main>
   );

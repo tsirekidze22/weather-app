@@ -12,7 +12,7 @@ main {
   position: relative;
   border: 1px solid red;
   height: 100vh;
-  width: 55%;
+  width: 57%;
   color: #fff;
   padding: 10px 30px;
 
@@ -89,5 +89,31 @@ main {
 .info-section {
   border: 1px solid red;
   height: 100vh;
-  width: 45%;
+  width: 43%;
+
+  .info-title {
+    font-size: 48px;
+    font-weight: 800;
+    letter-spacing: 1px;
+  }
+  .weather-info-card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+
+  .weather-info {
+    .temperature {
+      font-weight: 800;
+      font-size: 48px;
+    }
+
+    .weather-title {
+      font-weight: 300;
+      font-size: 48px;
+    }
+
+    .date {
+      font-weight: 400;
+    }
+  }
 }
