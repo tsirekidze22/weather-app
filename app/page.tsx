@@ -11,6 +11,7 @@ export default function Home() {
   const [city, setCity] = useState("");
   const [country, setCountry] = useState("");
   const [weatherData, setWeatherData] = useState({});
+  const [locationError, setLocationError] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
   const fetchData = async (cityName: string) => {
@@ -24,17 +25,20 @@ export default function Home() {
       setCity(response.data[0].name);
       setCountry(response.data[0].country);
 
-      if (lat && lon) {
-        const weatherResponse = await axios.get(
-          `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${process.env.API_KEY}`
-        );
-        const weatherInfo = weatherResponse;
-        //console.log(data2);
-        //you should use data2 and response2
-        setWeatherData(weatherInfo.data);
+      try {
+        if (lat && lon) {
+          const weatherResponse = await axios.get(
+            `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${process.env.API_KEY}`
+          );
+          const weatherInfo = weatherResponse;
+          setWeatherData(weatherInfo.data);
+        }
+        setLocationError("");
+      } catch (error) {
+        console.error("Error fetching weather data:", error);
       }
     } catch (error) {
-      console.error("Error fetching data:", error);
+      setLocationError(`Error - fetching location data for ${cityName}`);
     }
   };
 
@@ -52,9 +56,12 @@ export default function Home() {
               setCountry(response.data.sys.country);
               setWeatherData(response.data);
               fetchData(response.data.name);
+              setLocationError("");
             },
             (error) => {
-              console.error("Error getting location:", error);
+              setLocationError(
+                "On our magnificent Earth, the weather dances like an ever-changing symphony of elements. It paints the skies with hues of temperature, sprinkles the land with raindrops, and whispers secrets through gentle breezes. It's a masterpiece of nature's artistry. - ChatGPT"
+              );
             }
           );
         } else {
@@ -115,7 +122,12 @@ export default function Home() {
             </div>
           </div>
         </div>
-        {weatherData && <WeatherInfo weatherData={weatherData} />}
+        {weatherData && (
+          <WeatherInfo
+            weatherData={weatherData}
+            locationError={locationError}
+          />
+        )}
       </div>
     </main>
   );
