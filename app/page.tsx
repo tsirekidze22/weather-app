@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import axios from "axios";
+import { fetchData } from "./api";
 
 import "../styles/main.scss";
 import WeatherInfo from "./components/WeatherInfo";
@@ -13,34 +14,6 @@ export default function Home() {
   const [weatherData, setWeatherData] = useState({});
   const [locationError, setLocationError] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
-
-  const fetchData = async (cityName: string) => {
-    try {
-      const response = await axios.get(
-        `http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=1&appid=${process.env.API_KEY}`
-      );
-
-      const { lat, lon } = response.data[0];
-
-      setCity(response.data[0].name);
-      setCountry(response.data[0].country);
-
-      try {
-        if (lat && lon) {
-          const weatherResponse = await axios.get(
-            `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${process.env.API_KEY}`
-          );
-          const weatherInfo = weatherResponse;
-          setWeatherData(weatherInfo.data);
-        }
-        setLocationError("");
-      } catch (error) {
-        console.error("Error fetching weather data:", error);
-      }
-    } catch (error) {
-      setLocationError(`Error - fetching location data for ${cityName}`);
-    }
-  };
 
   useEffect(() => {
     const getCurrentLocation = async () => {
@@ -75,10 +48,20 @@ export default function Home() {
     getCurrentLocation();
   }, []);
 
-  const handleClick = () => {
+  const handleClick = async () => {
     if (inputRef.current) {
       const city = inputRef.current?.value.trim();
-      fetchData(city);
+      const {
+        city: fetchedCity,
+        country: fetchedCountry,
+        weatherData: fetchedWeatherData,
+        locationError: fetchedLocationError,
+      } = await fetchData(city);
+
+      setCity(fetchedCity);
+      setCountry(fetchedCountry);
+      setWeatherData(fetchedWeatherData);
+      setLocationError(fetchedLocationError);
       inputRef.current.value = "";
     }
   };
