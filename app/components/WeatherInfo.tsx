@@ -21,10 +21,10 @@ const WeatherInfo: React.FC<Props> = ({ weatherData, locationError }) => {
   const formattedDate = today.toDateString();
 
   return (
-    <div className="info-section p-5">
+    <div className="info-section p-4 pt-0 p-md-5">
       <h1 className="info-title mt-4">Today</h1>
       {Object.keys(weatherData).length !== 0 && (
-        <div className="weather-info-card px-4 py-5 d-flex mt-5">
+        <div className="weather-info-card px-4 py-md-5 py-4 d-flex mt-5">
           <div className="weather-info">
             <h2 className="temperature">{temInCelsius}°</h2>
             <div className="d-flex">

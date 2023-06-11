@@ -67,7 +67,7 @@ export default function Home() {
   };
   return (
     <main>
-      <div className="d-flex">
+      <div className="d-md-flex">
         <div className="search-section py-5">
           <div className="background"></div>
           <header className="d-flex justify-content-between">
