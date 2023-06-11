@@ -33,7 +33,7 @@ const WeatherInfo: React.FC<Props> = ({ weatherData, locationError }) => {
                 <p className="weather-desc">{weather.description}</p>
               </div>
               <Image
-                src={`http://openweathermap.org/img/wn/${weather.icon}@2x.png`}
+                src={`https://openweathermap.org/img/wn/${weather.icon}@2x.png`}
                 width={60}
                 height={60}
                 alt="img"

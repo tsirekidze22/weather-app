@@ -1,7 +1,7 @@
 import axios from "axios";
 
 interface WeatherData {
-  [key: string]: any; // Define the type for weatherData as any for flexibility
+  [key: string]: any;
 }
 
 interface FetchDataResponse {
@@ -15,7 +15,7 @@ export const fetchData = (cityName: string): Promise<FetchDataResponse> => {
   return new Promise((resolve, reject) => {
     axios
       .get(
-        `http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=1&appid=${process.env.API_KEY}`
+        `https://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=1&appid=${process.env.API_KEY}`
       )
       .then((response) => {
         const { lat, lon } = response.data[0];
@@ -41,7 +41,6 @@ export const fetchData = (cityName: string): Promise<FetchDataResponse> => {
           });
       })
       .catch((error) => {
-        console.error("Error fetching location data:", error);
         resolve({
           city: "",
           country: "",
